@@ -25,17 +25,119 @@ body {
     color:var(--text);
     background-color:  grey;
 }
+
+/* The container holding the toggle */
+.apple-glass-toggle {
+  position: relative;
+  display: inline-block;
+  width: 54px;
+  height: 32px;
+  cursor: pointer;
+}
+
+/* Hide the native checkbox completely */
+.apple-glass-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The Glass Track (Background) */
+.toggle-slider {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255, 255, 255, 0.08); /* Translucent glass */
+  border: 1px solid rgba(255, 255, 255, 0.15); /* Fine crisp border */
+  border-radius: 32px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  
+  /* Smooth physics for both color and shadow transitions */
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1), 
+              0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* The Glass Knob (The Slider) */
+.toggle-slider::before {
+  content: "";
+  position: absolute;
+  height: 26px;
+  width: 26px;
+  left: 2px;
+  bottom: 2px;
+  
+  /* Bright, physical glass appearance */
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  
+  /* Apple-style precise lighting drop shadow */
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15), 
+              0 1px 1px rgba(0, 0, 0, 0.16),
+              inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  
+  /* Uses the Apple-like responsive ease curve */
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), 
+              width 0.3s ease;
+}
+
+/* --- INTERACTIVE STATES --- */
+
+/* Hover State: Gentle illumination */
+.apple-glass-toggle:hover .toggle-slider {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Active State: The knob stretches slightly when held down (Apple Physical Detail) */
+.apple-glass-toggle:active .toggle-slider::before {
+  width: 30px;
+}
+
+/* Checked State: The glass floods with Apple's system green fluid */
+.apple-glass-toggle input:checked + .toggle-slider {
+  background: rgba(52, 199, 89, 0.7); /* Apple Glass Green */
+  border-color: rgba(52, 199, 89, 0.4);
+  box-shadow: 0 4px 12px rgba(52, 199, 89, 0.2), 
+              inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+/* Checked Move: Move the knob over (and adjust coordinate for the active stretch) */
+.apple-glass-toggle input:checked + .toggle-slider::before {
+  transform: translateX(22px);
+}
+.apple-glass-toggle input:checked:active .toggle-slider::before {
+  transform: translateX(18px); /* Ensures stretching doesn't clip out of the box */
+}
+
 /* 2. Text and links */
 #boyz {
+    transition-duration: 1s;
     text-align: center;
-    font-size: 50px;
+    font-size: 25px;
     background-color: brown;
+    border-radius: 10px;
+    border-color: rgb(28, 220, 127);
+    margin: 15px;
+    padding-top: 1px;
+    padding-bottom: 3px;
+    width: 130px;
+    border: 2px solid rgb(28, 220, 127);
+    margin-top: 10px;
+    margin-bottom: 15px;
+
     
 }
 #boyz:hover{
+    animation: pulse-animation 1.5s infinite ease-in-out;
     color: white;
     background-color: black;
-    transition-duration: 3s;
+    border: 2px solid rgb(10, 17, 231);
+    transition-duration: 2s;
+    box-shadow: 10px 10px 10px rgba(10, 17, 231, 0.4);
+
+
+    
 }
 h2,
 h3 {
@@ -139,4 +241,80 @@ abbr[title] {
 .liquid-glass-btn:hover::before {
   top: -40%; /* Pulls the warped fluid layer up into view */
   transform: rotate(150deg); /* Spins the warped shape to create a moving "liquid" flow */
+}
+
+
+#text{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: left;
+  font-weight: 300;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+
+
+}
+
+img{
+  width: 300px;
+  height: 300px;
+border-radius: 50%;
+border: 3px solid rgb(255, 0, 0,0.5);
+
+}
+
+#about figure {
+  position: relative;
+  width: fit-content;
+  margin: 32px auto;
+  isolation: isolate;
+}
+
+#about figure::before {
+  content: "";
+  position: absolute;
+  inset: -22px;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 166, 54, 0.62) 0%,
+    rgba(255, 91, 31, 0.3) 48%,
+    transparent 72%
+  );
+  filter: blur(18px);
+  opacity: 0.72;
+  animation: designer-ambient-glow 5s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes designer-ambient-glow {
+  from {
+    opacity: 0.5;
+    transform: scale(0.94);
+  }
+
+  to {
+    opacity: 0.95;
+    transform: scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #about figure::before {
+    animation: none;
+  }
+}
+
+.nav-link{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction:row;
+  gap: 30px;
+  list-style: none;
+  padding: 0;
+  margin: 10px 15px 20px;
+  flex-direction: row;
 }
